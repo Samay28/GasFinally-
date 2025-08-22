@@ -7,6 +7,13 @@
 #include "AbilitySystemComponent.h"
 #include "HealthAttributeSet.generated.h"
 
+#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
+    GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
+    GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
+    GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
+    GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FAttributeChangedEvent, UAttributeSet*, AttributeSet, float, OldValue, float, NewValue);
 UCLASS()
 class GASFINALLY_API UHealthAttributeSet : public UAttributeSet
@@ -16,29 +23,29 @@ class GASFINALLY_API UHealthAttributeSet : public UAttributeSet
 	public:
 		UHealthAttributeSet();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (HideFromModifiers))
 	FGameplayAttributeData Health;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FGameplayAttributeData MaxHealth;
 
-	ATTRIBUTE_ACCESSORS_BASIC(UHealthAttributeSet, Health);
-	ATTRIBUTE_ACCESSORS_BASIC(UHealthAttributeSet, MaxHealth);
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData Damage;
+
+
+	ATTRIBUTE_ACCESSORS(UHealthAttributeSet, Health);
+	ATTRIBUTE_ACCESSORS(UHealthAttributeSet, MaxHealth);
+	ATTRIBUTE_ACCESSORS(UHealthAttributeSet, Damage);
 
 	UFUNCTION(BlueprintPure, Category = "Attributes|Health")
 	float GetHealthCurrent() const { return Health.GetCurrentValue(); }
 
 	UFUNCTION(BlueprintPure, Category = "Attributes|Health")
-	float GetHealthBase() const { return Health.GetBaseValue(); }
-
-	UFUNCTION(BlueprintPure, Category = "Attributes|Health")
 	float GetMaxHealthCurrent() const { return MaxHealth.GetCurrentValue(); }
 
-	UFUNCTION(BlueprintPure, Category = "Attributes|Health")
-	float GetMaxHealthBase() const { return MaxHealth.GetBaseValue(); }
 
-
-	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override; // ourt attribute is laways clamped before it gets set
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override; // called after a gameplay effect is applied to this attribute set
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override; // our attribute is laways clamped before it gets set
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override; // broadcast after the attribute has changed
 
 	UPROPERTY(BlueprintAssignable)

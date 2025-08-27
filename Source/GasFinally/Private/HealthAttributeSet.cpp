@@ -24,6 +24,19 @@ void UHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 		}
 		SetDamage(0.0f);
 	}
+	else if (Data.EvaluatedData.Attribute == GetHealAttribute())
+	{
+		const float HealValue = GetHeal();
+		const float OldHealthValue = GetHealth();
+		const float MaxHealthValue = GetMaxHealth();
+		const float NewHealthValue = FMath::Clamp(OldHealthValue + HealValue, 0.0f, MaxHealthValue);
+
+		if (OldHealthValue != NewHealthValue)
+		{
+			SetHealth(NewHealthValue);
+		}
+		SetHeal(0.0f);
+	}
 }
 
 void UHealthAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)

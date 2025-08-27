@@ -32,9 +32,14 @@ class GASFINALLY_API UHealthAttributeSet : public UAttributeSet
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FGameplayAttributeData Damage;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData Heal;
+
+
 
 	ATTRIBUTE_ACCESSORS(UHealthAttributeSet, Health);
 	ATTRIBUTE_ACCESSORS(UHealthAttributeSet, MaxHealth);
+	ATTRIBUTE_ACCESSORS(UHealthAttributeSet, Heal);
 	ATTRIBUTE_ACCESSORS(UHealthAttributeSet, Damage);
 
 	UFUNCTION(BlueprintPure, Category = "Attributes|Health")

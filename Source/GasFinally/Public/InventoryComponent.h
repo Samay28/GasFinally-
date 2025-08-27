@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include <ItemTypes.h>
+#include <ItemTypesToTables.h>
 #include "InventoryComponent.generated.h"
 
 struct FGameplayTag;
@@ -21,12 +23,21 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddItem(const FGameplayTag& ItemTag, int32 Count = 1);
 
+	UFUNCTION(BlueprintCallable)
+	void UseItem(const FGameplayTag& ItemTag, int32 Count);
+
+	UFUNCTION(Blueprintpure)
+	FMasterItemDefinition GetItemDefinitionByTag(const FGameplayTag ItemTag) const;
+
 protected:
 
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAcess = "true"))
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAcess = "true"))  ///its never replicated 
 	TMap<FGameplayTag, int32> InventoryMap;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UItemTypesToTables> InventoryDefinitions;
 
 private:
 

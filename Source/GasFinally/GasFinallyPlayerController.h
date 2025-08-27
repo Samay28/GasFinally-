@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "AbilitySystemInterface.h"
 #include "GasFinallyPlayerController.generated.h"
 
 class UInputMappingContext;
 class UInventoryComponent;
 
 UCLASS(abstract)
-class AGasFinallyPlayerController : public APlayerController
+class AGasFinallyPlayerController : public APlayerController, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 	
@@ -20,6 +21,7 @@ protected:
 	TArray<UInputMappingContext*> DefaultMappingContexts;
 
 	virtual void SetupInputComponent() override;
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UInventoryComponent> InventoryComp;

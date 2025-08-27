@@ -6,6 +6,7 @@
 #include "Engine/LocalPlayer.h"
 #include "InventoryComponent.h"
 #include "InputMappingContext.h"
+#include <AbilitySystemBlueprintLibrary.h>
 
 void AGasFinallyPlayerController::SetupInputComponent()
 {
@@ -19,6 +20,11 @@ void AGasFinallyPlayerController::SetupInputComponent()
 			Subsystem->AddMappingContext(CurrentContext, 0);
 		}
 	}
+}
+
+UAbilitySystemComponent* AGasFinallyPlayerController::GetAbilitySystemComponent() const
+{
+	return UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
 }
 
 AGasFinallyPlayerController::AGasFinallyPlayerController()

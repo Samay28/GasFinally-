@@ -7,8 +7,11 @@
 #include "GasFinallyPlayerController.generated.h"
 
 class UInputMappingContext;
-class UInventoryComponent;
 
+/**
+ *  Basic PlayerController class for a third person game
+ *  Manages input mappings
+ */
 UCLASS(abstract)
 class AGasFinallyPlayerController : public APlayerController
 {
@@ -16,16 +19,11 @@ class AGasFinallyPlayerController : public APlayerController
 	
 protected:
 
+	/** Input Mapping Contexts */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category ="Input", meta = (AllowPrivateAccess = "true"))
 	TArray<UInputMappingContext*> DefaultMappingContexts;
 
+	/** Input mapping context setup */
 	virtual void SetupInputComponent() override;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<UInventoryComponent> InventoryComp;
-
-public:
-	AGasFinallyPlayerController();
-
 
 };

@@ -4,7 +4,6 @@
 #include "GasFinallyPlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
-#include "InventoryComponent.h"
 #include "InputMappingContext.h"
 
 void AGasFinallyPlayerController::SetupInputComponent()
@@ -19,9 +18,4 @@ void AGasFinallyPlayerController::SetupInputComponent()
 			Subsystem->AddMappingContext(CurrentContext, 0);
 		}
 	}
-}
-
-AGasFinallyPlayerController::AGasFinallyPlayerController()
-{
-	InventoryComp = CreateDefaultSubobject<UInventoryComponent>("InventoryComp");
 }

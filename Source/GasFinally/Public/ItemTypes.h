@@ -25,7 +25,7 @@ struct FConsumableProps
 USTRUCT(BlueprintType)
 struct FMasterItemDefinition : public FTableRowBase //used to make data tables 
 {
-
+	                                                                                
 	GENERATED_BODY()
 
 

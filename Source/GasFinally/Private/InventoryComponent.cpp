@@ -3,6 +3,7 @@
 #include "MyAbilitySystemLibrary.h"
 #include "GameplayTagContainer.h"
 #include "AbilitySystemComponent.h" 
+#include "InventoryInterface.h"
 #include <AbilitySystemBlueprintLibrary.h>
 
 
@@ -16,6 +17,7 @@ UInventoryComponent::UInventoryComponent()
 void UInventoryComponent::AddItem(const FGameplayTag& ItemTag, int32 Count)
 {
 	AActor* Owner = GetOwner();
+	/*UUserWidget* OwnerWidget = Cast<UUserWidget>(Owner);*/
 	if (!Owner)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("InventoryComponent: Owner is null"));
@@ -35,6 +37,7 @@ void UInventoryComponent::AddItem(const FGameplayTag& ItemTag, int32 Count)
 	else
 	{
 		InventoryMap.Add(ItemTag, Count);
+		
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("InventoryComponent: Added %d of item %s. Total now: %d"), Count, *ItemTag.ToString(), InventoryMap[ItemTag]);

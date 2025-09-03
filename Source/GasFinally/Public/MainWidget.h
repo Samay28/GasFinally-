@@ -7,9 +7,7 @@
 #include "InventoryInterface.h"
 #include "MainWidget.generated.h"
 
-/**
- * 
- */
+class USlotWidget;
 UCLASS()
 class GASFINALLY_API UMainWidget : public UUserWidget, public IInventoryInterface
 {

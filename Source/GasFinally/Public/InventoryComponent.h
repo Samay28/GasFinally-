@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include <ItemTypes.h>
 #include <ItemTypesToTables.h>
+#include <MainWidget.h>
 #include "InventoryComponent.generated.h"
 
 struct FGameplayTag;
@@ -28,6 +29,9 @@ public:
 
 	UFUNCTION(Blueprintpure)
 	FMasterItemDefinition GetItemDefinitionByTag(const FGameplayTag ItemTag) const;
+
+	UPROPERTY(EditDefaultsOnly)
+	UMainWidget* MainWidgetClass;
 
 protected:
 

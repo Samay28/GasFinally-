@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include <GameplayTagContainer.h>
 #include "InventoryInterface.generated.h"
-#include <GameplayTagContainer.generated.h>
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)

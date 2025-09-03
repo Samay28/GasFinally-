@@ -7,5 +7,5 @@
 
 void UMainWidget::AddItemToWidget(const FGameplayTag ItemTag, const int Quantity)
 {
-
+	UE_LOG(LogTemp, Warning, TEXT("Adding item to widget: %s, Quantity: %d"), *ItemTag.ToString(), Quantity);
 }

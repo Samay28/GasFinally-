@@ -37,7 +37,14 @@ void UInventoryComponent::AddItem(const FGameplayTag& ItemTag, int32 Count)
 	else
 	{
 		InventoryMap.Add(ItemTag, Count);
-		
+		if (MainWidgetClass->GetClass()->ImplementsInterface(UInventoryInterface::StaticClass()))
+		{
+			IInventoryInterface* InventoryInterface = Cast<IInventoryInterface>(MainWidgetClass->GetClass()->GetDefaultObject());
+			if (InventoryInterface)
+			{
+				InventoryInterface->AddItemToWidget(ItemTag, Count);
+			}
+		}
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("InventoryComponent: Added %d of item %s. Total now: %d"), Count, *ItemTag.ToString(), InventoryMap[ItemTag]);

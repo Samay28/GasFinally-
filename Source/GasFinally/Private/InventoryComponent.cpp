@@ -5,6 +5,7 @@
 #include "AbilitySystemComponent.h" 
 #include "InventoryInterface.h"
 #include <AbilitySystemBlueprintLibrary.h>
+#include <GasFinallyPlayerController.h>
 
 
 UInventoryComponent::UInventoryComponent()
@@ -37,9 +38,9 @@ void UInventoryComponent::AddItem(const FGameplayTag& ItemTag, int32 Count)
 	else
 	{
 		InventoryMap.Add(ItemTag, Count);
-		if (MainWidgetClass->GetClass()->ImplementsInterface(UInventoryInterface::StaticClass()))
+		if (MainWidgetInstance && MainWidgetInstance->GetClass()->ImplementsInterface(UInventoryInterface::StaticClass()))
 		{
-			IInventoryInterface* InventoryInterface = Cast<IInventoryInterface>(MainWidgetClass->GetClass()->GetDefaultObject());
+			IInventoryInterface* InventoryInterface = Cast<IInventoryInterface>(MainWidgetInstance);
 			if (InventoryInterface)
 			{
 				InventoryInterface->AddItemToWidget(ItemTag, Count);

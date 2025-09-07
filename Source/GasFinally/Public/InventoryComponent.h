@@ -30,9 +30,10 @@ public:
 	UFUNCTION(Blueprintpure)
 	FMasterItemDefinition GetItemDefinitionByTag(const FGameplayTag ItemTag) const;
 
-	UPROPERTY(EditDefaultsOnly)
-	UMainWidget* MainWidgetClass;
+	UPROPERTY()
+	UMainWidget* MainWidgetInstance;
 
+	void InitializeWidget(UMainWidget* Widget) { MainWidgetInstance = Widget; }
 protected:
 
 	virtual void BeginPlay() override;

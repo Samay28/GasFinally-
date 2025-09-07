@@ -5,6 +5,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 #include "InventoryComponent.h"
+#include "MainWidget.h"
 #include "InputMappingContext.h"
 #include <AbilitySystemBlueprintLibrary.h>
 
@@ -27,7 +28,19 @@ UAbilitySystemComponent* AGasFinallyPlayerController::GetAbilitySystemComponent(
 	return UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
 }
 
+
 AGasFinallyPlayerController::AGasFinallyPlayerController()
 {
 	InventoryComp = CreateDefaultSubobject<UInventoryComponent>("InventoryComp");
+	
+
+}
+
+void AGasFinallyPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+	UMainWidget* Widget = CreateWidget<UMainWidget>(this, MainWidgetClass);
+	Widget->AddToViewport();
+
+	InventoryComp->InitializeWidget(Widget);
 }

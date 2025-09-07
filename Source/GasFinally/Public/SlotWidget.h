@@ -18,19 +18,19 @@ class GASFINALLY_API USlotWidget : public UUserWidget
 
 public:
 
-    UPROPERTY(EditDefaultsOnly)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UImage* ItemIcon;
 
-    UPROPERTY(EditDefaultsOnly)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UTextBlock* QuantityText;
 
-    //UPROPERTY(EditAnywhere)
-    //USlotWidget* NextSlot;
 
     UPROPERTY(EditAnywhere)
     bool bIsOccupied;
 
-    // This should NOT be BPImplementableEvent, just BlueprintCallable
+
+	USlotWidget* nextSlot;
+
     UFUNCTION(BlueprintCallable)
     void SetItemIcon(UTexture2D* NewIcon);
 

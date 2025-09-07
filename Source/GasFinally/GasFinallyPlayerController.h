@@ -26,8 +26,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UInventoryComponent> InventoryComp;
 
+
+
 public:
 	AGasFinallyPlayerController();
+	void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<class UMainWidget> MainWidgetClass;
+
 
 
 };

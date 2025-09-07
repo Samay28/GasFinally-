@@ -9,6 +9,7 @@
 
 class USlotWidget;
 struct FMasterItemDefinition;
+class UHorizontalBox;
 UCLASS()
 class GASFINALLY_API UMainWidget : public UUserWidget, public IInventoryInterface
 {
@@ -21,14 +22,32 @@ public:
 	UDataTable* ItemDataTable;
 
 
+	UFUNCTION(BlueprintCallable)
+	USlotWidget* GetEmptySlot();
+
+	
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidgetOptional), Category = "Inventory")
 	USlotWidget* ActiveSlot;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<class USlotWidget*> AllSlots;
+	//UPROPERTY(EditDefaultsOnly)
+	//USlotWidget* Slot2;
+
+	//UPROPERTY(EditDefaultsOnly)
+	//USlotWidget* Slot3;
+
+	//UPROPERTY(EditDefaultsOnly)
+	//USlotWidget* Slot4;
+
+	//UPROPERTY(EditDefaultsOnly)
+	//USlotWidget* Slot5;
+
+	
+
 
 private:
-	/*void InitializeSlots();*/
-	USlotWidget* GetEmptySlot();
+	void InitializeSlots();
+
+	void NativeConstruct() override;
 
 	
 };

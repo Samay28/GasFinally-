@@ -13,7 +13,7 @@ void UMainWidget::AddItemToWidget(const FGameplayTag ItemTag, const int Quantity
 	
 
 	UE_LOG(LogTemp, Warning, TEXT("Adding item to widget: %s, Quantity: %d"), *ItemTag.ToString(), Quantity);
-	/*ActiveSlot = GetEmptySlot();*/
+	ActiveSlot = GetEmptySlot();
 	if (!ActiveSlot)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Active slot NULL"));
@@ -40,27 +40,27 @@ void UMainWidget::AddItemToWidget(const FGameplayTag ItemTag, const int Quantity
 
 USlotWidget* UMainWidget::GetEmptySlot()
 {	
-	//USlotWidget* CurrentSlot = Slot1;
-	//while (CurrentSlot)
-	//{
-	//	if (!CurrentSlot->bIsOccupied)
-	//	{	
-	//		UE_LOG(LogTemp, Warning, TEXT("Slot free = %s"), *CurrentSlot->GetName());
-	//		return CurrentSlot; // found a free slot
-	//	}
+	USlotWidget* CurrentSlot = Slot1;
+	while (CurrentSlot)
+	{
+		if (!CurrentSlot->bIsOccupied)
+		{	
+			UE_LOG(LogTemp, Warning, TEXT("Slot free = %s"), *CurrentSlot->GetName());
+			return CurrentSlot; // found a free slot
+		}
 
-	//	CurrentSlot = CurrentSlot->nextSlot;
-	//}
+		CurrentSlot = CurrentSlot->nextSlot;
+	}
 	return nullptr;
 }
 
 void UMainWidget::InitializeSlots()
 {
-	//Slot1->nextSlot = Slot2;
-	//Slot2->nextSlot = Slot3;
-	//Slot3->nextSlot = Slot4;
-	//Slot4->nextSlot = Slot5;
-	//Slot5->nextSlot = nullptr;
+	Slot1->nextSlot = Slot2;
+	Slot2->nextSlot = Slot3;
+	Slot3->nextSlot = Slot4;
+	Slot4->nextSlot = Slot5;
+	Slot5->nextSlot = nullptr;
 }
 
 void UMainWidget::NativeConstruct()

@@ -29,17 +29,20 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidgetOptional), Category = "Inventory")
 	USlotWidget* ActiveSlot;
 
-	//UPROPERTY(EditDefaultsOnly)
-	//USlotWidget* Slot2;
+	UPROPERTY(EditDefaultsOnly, meta=(BindWidget))
+	USlotWidget* Slot1;
 
-	//UPROPERTY(EditDefaultsOnly)
-	//USlotWidget* Slot3;
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	USlotWidget* Slot2;
 
-	//UPROPERTY(EditDefaultsOnly)
-	//USlotWidget* Slot4;
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	USlotWidget* Slot3;
 
-	//UPROPERTY(EditDefaultsOnly)
-	//USlotWidget* Slot5;
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	USlotWidget* Slot4;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	USlotWidget* Slot5;
 
 	
 

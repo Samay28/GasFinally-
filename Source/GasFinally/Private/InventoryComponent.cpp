@@ -38,13 +38,13 @@ void UInventoryComponent::AddItem(const FGameplayTag& ItemTag, int32 Count)
 	else
 	{
 		InventoryMap.Add(ItemTag, Count);
-		if (MainWidgetInstance && MainWidgetInstance->GetClass()->ImplementsInterface(UInventoryInterface::StaticClass()))
+	}
+	if (MainWidgetInstance && MainWidgetInstance->GetClass()->ImplementsInterface(UInventoryInterface::StaticClass()))
+	{
+		IInventoryInterface* InventoryInterface = Cast<IInventoryInterface>(MainWidgetInstance);
+		if (InventoryInterface)
 		{
-			IInventoryInterface* InventoryInterface = Cast<IInventoryInterface>(MainWidgetInstance);
-			if (InventoryInterface)
-			{
 				InventoryInterface->AddItemToWidget(ItemTag, Count);
-			}
 		}
 	}
 
@@ -72,9 +72,29 @@ void UInventoryComponent::UseItem(const FGameplayTag& ItemTag, int32 Count)
 			ownerASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 
 			InventoryMap[ItemTag] -= Count;
+
+
+			if (MainWidgetInstance && MainWidgetInstance->GetClass()->ImplementsInterface(UInventoryInterface::StaticClass()))
+			{
+				IInventoryInterface* InventoryInterface = Cast<IInventoryInterface>(MainWidgetInstance);
+				if (InventoryInterface)
+				{
+					InventoryInterface->UseItemFromWidget(InventoryMap[ItemTag]);
+				}
+			}
+
+
 			if (InventoryMap[ItemTag] <= 0)
 			{
 				InventoryMap.Remove(ItemTag);
+				if (MainWidgetInstance && MainWidgetInstance->GetClass()->ImplementsInterface(UInventoryInterface::StaticClass()))
+				{
+					IInventoryInterface* InventoryInterface = Cast<IInventoryInterface>(MainWidgetInstance);
+					if (InventoryInterface)
+					{
+						InventoryInterface->RemoveItemFromWidget();
+					}
+				}
 			}
 			UE_LOG(LogTemp, Warning, TEXT("InventoryComponent: Used %d of item %s. Total now: %d"), Count, *ItemTag.ToString(), InventoryMap.Contains(ItemTag) ? InventoryMap[ItemTag] : 0);
 		}

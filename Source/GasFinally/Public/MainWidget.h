@@ -17,6 +17,8 @@ class GASFINALLY_API UMainWidget : public UUserWidget, public IInventoryInterfac
 	
 public:
 	void AddItemToWidget(const FGameplayTag ItemTag, const int Quantity) override;
+	void UseItemFromWidget(const int Quantity) override;
+	void RemoveItemFromWidget() override;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Inventory")
 	UDataTable* ItemDataTable;

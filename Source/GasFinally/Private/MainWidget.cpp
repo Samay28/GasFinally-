@@ -11,8 +11,6 @@
 void UMainWidget::AddItemToWidget(const FGameplayTag ItemTag, const int Quantity)
 {	
 	
-
-	UE_LOG(LogTemp, Warning, TEXT("Adding item to widget: %s, Quantity: %d"), *ItemTag.ToString(), Quantity);
 	ActiveSlot = GetEmptySlot();
 	if (!ActiveSlot)
 	{
@@ -23,17 +21,29 @@ void UMainWidget::AddItemToWidget(const FGameplayTag ItemTag, const int Quantity
 	//fetch item data from data table using ItemTag here
 	if (const FMasterItemDefinition* Row = UMyAbilitySystemLibrary::GetDataTableRowByTag<FMasterItemDefinition>(ItemDataTable, ItemTag))
 	{
-		 /*You now have access to icon, name, description, etc*/
 		ActiveSlot->SetItemIcon(Row->ItemIcon);
 		ActiveSlot->QuantityText->SetText(FText::AsNumber(Quantity));
 		ActiveSlot->bIsOccupied = true;
-		UE_LOG(LogTemp, Error, TEXT("Data will be fetched dw samay!"));
-
-		UE_LOG(LogTemp, Warning, TEXT("Letss SEE : %s"), *Row->ItemDescription.ToString());
 	}
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("Could not find row for tag %s in ItemDataTable"), *ItemTag.ToString());
+	}
+}
+
+void UMainWidget::UseItemFromWidget(const int Quantity)
+{
+	ActiveSlot = Slot1;
+	ActiveSlot->QuantityText->SetText(FText::AsNumber(Quantity));
+}
+
+void UMainWidget::RemoveItemFromWidget()
+{
+	if (ActiveSlot)
+	{
+		ActiveSlot->ItemIcon->SetBrushFromTexture(nullptr);
+		ActiveSlot->QuantityText->SetText(FText::FromString(" "));
+		ActiveSlot->bIsOccupied = false;
 	}
 }
 

@@ -24,4 +24,6 @@ class GASFINALLY_API IInventoryInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	virtual void AddItemToWidget(const FGameplayTag ItemTag, const int Quantity) = 0;
+	virtual void UseItemFromWidget(const int Quantity) = 0;
+	virtual void RemoveItemFromWidget() = 0;
 };

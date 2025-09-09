@@ -38,7 +38,7 @@ protected:
 
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAcess = "true"))  ///its never replicated 
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAcess = "true"))  //its never replicated 
 	TMap<FGameplayTag, int32> InventoryMap;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -46,6 +46,6 @@ protected:
 
 private:
 
-
+	IInventoryInterface* GetInventoryInterface() const;
 		
 };

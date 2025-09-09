@@ -4,7 +4,6 @@
 #include "SlotWidget.h"
 #include "ItemTypes.h"
 #include <GameplayTagContainer.h>
-//#include "Blueprint/WidgetTree.h"
 #include <Components/HorizontalBox.h>
 #include <MyAbilitySystemLibrary.h>
 

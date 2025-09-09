@@ -16,9 +16,13 @@ UInventoryComponent::UInventoryComponent()
 }
 
 void UInventoryComponent::AddItem(const FGameplayTag& ItemTag, int32 Count)
-{
+{	
+	if(InventoryMap.Num() >= 5) //max 5 different items
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InventoryComponent: Inventory full, cannot add item %s"), *ItemTag.ToString());
+		return;
+	}
 	AActor* Owner = GetOwner();
-	/*UUserWidget* OwnerWidget = Cast<UUserWidget>(Owner);*/
 	if (!Owner)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("InventoryComponent: Owner is null"));
@@ -39,13 +43,9 @@ void UInventoryComponent::AddItem(const FGameplayTag& ItemTag, int32 Count)
 	{
 		InventoryMap.Add(ItemTag, Count);
 	}
-	if (MainWidgetInstance && MainWidgetInstance->GetClass()->ImplementsInterface(UInventoryInterface::StaticClass()))
+	if (IInventoryInterface* InventoryInterface = GetInventoryInterface())
 	{
-		IInventoryInterface* InventoryInterface = Cast<IInventoryInterface>(MainWidgetInstance);
-		if (InventoryInterface)
-		{
-				InventoryInterface->AddItemToWidget(ItemTag, Count);
-		}
+		InventoryInterface->AddItemToWidget(ItemTag, Count);
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("InventoryComponent: Added %d of item %s. Total now: %d"), Count, *ItemTag.ToString(), InventoryMap[ItemTag]);
@@ -74,28 +74,20 @@ void UInventoryComponent::UseItem(const FGameplayTag& ItemTag, int32 Count)
 			InventoryMap[ItemTag] -= Count;
 
 
-			if (MainWidgetInstance && MainWidgetInstance->GetClass()->ImplementsInterface(UInventoryInterface::StaticClass()))
+			if (IInventoryInterface* InventoryInterface = GetInventoryInterface())
 			{
-				IInventoryInterface* InventoryInterface = Cast<IInventoryInterface>(MainWidgetInstance);
-				if (InventoryInterface)
-				{
-					InventoryInterface->UseItemFromWidget(InventoryMap[ItemTag]);
-				}
+				InventoryInterface->UseItemFromWidget(Count);
 			}
 
 
 			if (InventoryMap[ItemTag] <= 0)
 			{
-				InventoryMap.Remove(ItemTag);
-				if (MainWidgetInstance && MainWidgetInstance->GetClass()->ImplementsInterface(UInventoryInterface::StaticClass()))
+				if (IInventoryInterface* InventoryInterface = GetInventoryInterface())
 				{
-					IInventoryInterface* InventoryInterface = Cast<IInventoryInterface>(MainWidgetInstance);
-					if (InventoryInterface)
-					{
-						InventoryInterface->RemoveItemFromWidget();
-					}
+					InventoryInterface->RemoveItemFromWidget();
 				}
 			}
+
 			UE_LOG(LogTemp, Warning, TEXT("InventoryComponent: Used %d of item %s. Total now: %d"), Count, *ItemTag.ToString(), InventoryMap.Contains(ItemTag) ? InventoryMap[ItemTag] : 0);
 		}
 	}
@@ -124,6 +116,15 @@ void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+}
+
+IInventoryInterface* UInventoryComponent::GetInventoryInterface() const
+{
+	if (MainWidgetInstance && MainWidgetInstance->GetClass()->ImplementsInterface(UInventoryInterface::StaticClass()))
+	{
+		return Cast<IInventoryInterface>(MainWidgetInstance);
+	}
+	return nullptr;
 }
 
 

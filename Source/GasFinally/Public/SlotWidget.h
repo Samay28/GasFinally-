@@ -6,6 +6,7 @@
 #include "Components/TextBlock.h"
 #include "Blueprint/UserWidget.h"
 #include <Components/Image.h>
+#include <GameplayTagContainer.h>
 #include "SlotWidget.generated.h"
 
 /**
@@ -24,6 +25,8 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UTextBlock* QuantityText;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FGameplayTag ItemTagWidget;
 
     UPROPERTY(EditAnywhere)
     bool bIsOccupied;

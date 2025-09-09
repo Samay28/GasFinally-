@@ -28,7 +28,6 @@ void UMainWidget::AddItemToWidget(const FGameplayTag ItemTag, const int Quantity
 		int CurrentQuantity = FCString::Atoi(*ActiveSlot->QuantityText->GetText().ToString());
 		CurrentQuantity += Quantity;
 		ActiveSlot->QuantityText->SetText(FText::AsNumber(CurrentQuantity));
-		ActiveSlot = Slot1;
 		return;
 	}
 
@@ -56,7 +55,6 @@ void UMainWidget::AddItemToWidget(const FGameplayTag ItemTag, const int Quantity
 			ActiveSlot->QuantityText->SetText(FText::AsNumber(Quantity));
 			ActiveSlot->bIsOccupied = true;
 			ActiveSlot->ItemTagWidget = ItemTag;
-			ActiveSlot = Slot1;
 		}
 		else
 		{

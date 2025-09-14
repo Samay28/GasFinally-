@@ -15,7 +15,7 @@ class GASFINALLY_API ANPC : public AGasFinallyCharacter
 	GENERATED_BODY()
 public:
 	ANPC();
-	void PossessedBy(AController* NewController) override;
+	virtual void PossessedBy(AController* NewController) override;
 
 	
 };

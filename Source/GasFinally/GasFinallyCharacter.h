@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "ASC.h"
 #include "AbilitySystemInterface.h"
 #include "GasFinallyCharacter.generated.h"
 
@@ -25,6 +26,16 @@ class AGasFinallyCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
+
+protected:
+	//my added stuff of GA
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS");
+	TArray<TSubclassOf<class UGameplayAbility>> InitalAbilities;
+
+public:
+	//my added stuff
+	virtual void PossessedBy(AController* NewController) override;
+
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
@@ -35,7 +46,7 @@ class AGasFinallyCharacter : public ACharacter, public IAbilitySystemInterface
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities")
-	TObjectPtr<class UASC> AbilitySystemComponent;
+	TObjectPtr<UASC> AbilitySystemComponent;
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 

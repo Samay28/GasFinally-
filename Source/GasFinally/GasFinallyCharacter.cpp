@@ -60,6 +60,15 @@ void AGasFinallyCharacter::BeginPlay()
 	Super::BeginPlay();
 	AbilitySystemComponent->InitAbilityActorInfo(this, this); 
 }
+void AGasFinallyCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	for (const auto& EachAbility : InitalAbilities)
+	{
+		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(EachAbility));
+	}
+}
 UAbilitySystemComponent* AGasFinallyCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;

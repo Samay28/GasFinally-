@@ -39,7 +39,7 @@ void UHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 	}
 }
 
-void UHealthAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+void UHealthAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)// we clamp here
 {
 	UE_LOG(LogTemp, Warning, TEXT("PreChange: Attribute '%s'"), *Attribute.AttributeName);
 	if (Attribute == GetHealthAttribute())
@@ -49,10 +49,9 @@ void UHealthAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute
 	Super::PreAttributeBaseChange(Attribute, NewValue);
 }
 
-void UHealthAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+void UHealthAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) //notify listeners after the attribute has changed(UI, etc.)
 {
 	Super::PostAttributeChange(Attribute, OldValue, NewValue);
-	UE_LOG(LogTemp, Warning, TEXT("PostChange: Attribute '%s' OldValue=%.1f NewValue=%.1f"), *Attribute.AttributeName, OldValue, NewValue);
 
 	if (Attribute == GetHealthAttribute())
 	{

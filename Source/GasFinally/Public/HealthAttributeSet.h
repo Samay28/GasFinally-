@@ -24,7 +24,7 @@ class GASFINALLY_API UHealthAttributeSet : public UAttributeSet
 		UHealthAttributeSet();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (HideFromModifiers))
-	FGameplayAttributeData Health;
+	FGameplayAttributeData Health; //consists of base value and current value
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FGameplayAttributeData MaxHealth;

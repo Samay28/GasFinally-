@@ -50,7 +50,7 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	TObjectPtr<class UHealthAttributeSet> HealthSet;
 	
 protected:

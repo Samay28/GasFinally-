@@ -54,6 +54,9 @@ public:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	TObjectPtr<class UHealthAttributeSet> HealthSet;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<class UCombatAttributeSet> CombatSet;
+
 	UFUNCTION()
 	void OnOutOfHealthChar(AActor* InIntigator);
 	

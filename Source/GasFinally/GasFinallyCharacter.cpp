@@ -11,6 +11,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "ASC.h"
 #include "HealthAttributeSet.h"
+#include "CombatAttributeSet.h"
 #include "InputActionValue.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -54,6 +55,9 @@ AGasFinallyCharacter::AGasFinallyCharacter()
 
 	AbilitySystemComponent = CreateDefaultSubobject<UASC>(TEXT("AbilitySystemComponent"));
 	HealthSet = CreateDefaultSubobject<UHealthAttributeSet>(TEXT("HealthAttributeSet"));
+	CombatSet = CreateDefaultSubobject<UCombatAttributeSet>(TEXT("CombatAttributeSet"));
+	AbilitySystemComponent->AddAttributeSetSubobject<UHealthAttributeSet>(HealthSet);
+	AbilitySystemComponent->AddAttributeSetSubobject<UCombatAttributeSet>(CombatSet);
 }
 void AGasFinallyCharacter::BeginPlay()
 {	

@@ -48,3 +48,4 @@
 #*.RTF   diff=astextplain
 GardenPack/** filter=lfs diff=lfs merge=lfs -text
 GardenPack/* filter=lfs diff=lfs merge=lfs -text
+Deaths/* filter=lfs diff=lfs merge=lfs -text

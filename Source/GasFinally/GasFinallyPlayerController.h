@@ -35,6 +35,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<class UMainWidget> MainWidgetClass;
 
+	
+
 
 
 };

@@ -44,3 +44,4 @@ void AGasFinallyPlayerController::BeginPlay()
 
 	InventoryComp->InitializeWidget(Widget);
 }
+

@@ -22,6 +22,10 @@ void UHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 		{
 			SetHealth(NewHealthValue);
 		}
+		if (GetHealth() <= 0.0f)
+		{
+			OnOutOfHealth.Broadcast(Data.EffectSpec.GetEffectContext().GetInstigator()); //use this to notify listeners that we are out of health and hide heath bar of the player
+		}
 		SetDamage(0.0f);
 	}
 	else if (Data.EvaluatedData.Attribute == GetHealAttribute())

@@ -59,7 +59,9 @@ void AGasFinallyCharacter::BeginPlay()
 {	
 	Super::BeginPlay();
 	AbilitySystemComponent->InitAbilityActorInfo(this, this); 
+	AbilitySystemComponent->GetSet<UHealthAttributeSet>()->OnOutOfHealth.AddDynamic(this, &AGasFinallyCharacter::OnOutOfHealthChar);
 }
+
 void AGasFinallyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -72,6 +74,11 @@ void AGasFinallyCharacter::PossessedBy(AController* NewController)
 UAbilitySystemComponent* AGasFinallyCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+void AGasFinallyCharacter::OnOutOfHealthChar(AActor* InIntigator)
+{
+	UE_LOG(LogTemplateCharacter, Warning, TEXT("Character %s is out of health!"), *GetNameSafe(this));
 }
 	
 

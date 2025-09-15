@@ -32,6 +32,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS");
 	TArray<TSubclassOf<class UGameplayAbility>> InitalAbilities;
 
+
 public:
 	//my added stuff
 	virtual void PossessedBy(AController* NewController) override;
@@ -52,6 +53,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	TObjectPtr<class UHealthAttributeSet> HealthSet;
+
+	UFUNCTION()
+	void OnOutOfHealthChar(AActor* InIntigator);
 	
 protected:
 

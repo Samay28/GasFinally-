@@ -16,6 +16,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FAttributeChangedEvent, UAttributeSet*, AttributeSet, float, OldValue, float, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOutOfHealth, AActor* ,InInstigator);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDamageApplied, AActor*, InInstigator, float, AppliedDamage);
 
 UCLASS()
 class GASFINALLY_API UHealthAttributeSet : public UAttributeSet
@@ -60,4 +61,7 @@ class GASFINALLY_API UHealthAttributeSet : public UAttributeSet
 
 	UPROPERTY(BlueprintAssignable)
 	mutable FOutOfHealth OnOutOfHealth;
+
+	UPROPERTY(BlueprintAssignable)
+	mutable FDamageApplied OnDamageApplied;
 };

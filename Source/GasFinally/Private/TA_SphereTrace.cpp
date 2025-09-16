@@ -9,6 +9,7 @@ void ATA_SphereTrace::StartTargeting(UGameplayAbility* Ability)
 {
 	Super::StartTargeting(Ability); //used to call the parent class function first
 	SourceActor = Ability->GetCurrentActorInfo()->AvatarActor.Get(); //get the actor that owns the ability
+	ShouldProduceTargetDataOnServer = true;// for npc to spawn this
 }
 
 void ATA_SphereTrace::ConfirmTargeting()

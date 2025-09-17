@@ -7,6 +7,8 @@
 #include "Logging/LogMacros.h"
 #include "ASC.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayAbilitiesModule.h" //to fetch global data
+#include "AbilitySystemGlobals.h" //to fetch global data
 #include "GasFinallyCharacter.generated.h"
 
 class USpringArmComponent;
@@ -59,6 +61,9 @@ public:
 
 	UFUNCTION()
 	void OnOutOfHealthChar(AActor* InIntigator);
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly) //experience level bro
+	int32 StartLevel;
 	
 protected:
 

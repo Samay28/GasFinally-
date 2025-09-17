@@ -58,12 +58,21 @@ AGasFinallyCharacter::AGasFinallyCharacter()
 	CombatSet = CreateDefaultSubobject<UCombatAttributeSet>(TEXT("CombatAttributeSet"));
 	AbilitySystemComponent->AddAttributeSetSubobject<UHealthAttributeSet>(HealthSet);
 	AbilitySystemComponent->AddAttributeSetSubobject<UCombatAttributeSet>(CombatSet);
+
+	
+
+	StartLevel = 1;
 }
 void AGasFinallyCharacter::BeginPlay()
 {	
 	Super::BeginPlay();
 	AbilitySystemComponent->InitAbilityActorInfo(this, this); 
 	AbilitySystemComponent->GetSet<UHealthAttributeSet>()->OnOutOfHealth.AddDynamic(this, &AGasFinallyCharacter::OnOutOfHealthChar);
+
+	IGameplayAbilitiesModule::Get().GetAbilitySystemGlobals()->GetAttributeSetInitter()->InitAttributeSetDefaults(AbilitySystemComponent, TEXT("GASCharacter"), StartLevel, true); //init attributes from data table instead of default values in blueprint
+	
+	const float MaxHealth = HealthSet->GetMaxHealth();
+	HealthSet->SetHealth(MaxHealth);
 }
 
 void AGasFinallyCharacter::PossessedBy(AController* NewController)

@@ -4,8 +4,8 @@
 
 UHealthAttributeSet::UHealthAttributeSet()
 {
-	InitHealth(100.0f);
-	InitMaxHealth(100.0f);
+	/*InitHealth(100.0f);
+	InitMaxHealth(100.0f);*/
 }
 
 void UHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

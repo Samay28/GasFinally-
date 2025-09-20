@@ -1,5 +1,5 @@
-#include "Abilities/GameplayAbility.h"
 #include "TA_SphereTrace.h"
+#include "Abilities/GameplayAbility.h"
 
 ATA_SphereTrace::ATA_SphereTrace()
 {

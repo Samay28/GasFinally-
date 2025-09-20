@@ -12,6 +12,7 @@
 #include "ASC.h"
 #include "HealthAttributeSet.h"
 #include "CombatAttributeSet.h"
+#include "ExpAttributeSet.h"
 #include "InputActionValue.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -56,9 +57,10 @@ AGasFinallyCharacter::AGasFinallyCharacter()
 	AbilitySystemComponent = CreateDefaultSubobject<UASC>(TEXT("AbilitySystemComponent"));
 	HealthSet = CreateDefaultSubobject<UHealthAttributeSet>(TEXT("HealthAttributeSet"));
 	CombatSet = CreateDefaultSubobject<UCombatAttributeSet>(TEXT("CombatAttributeSet"));
+	ExpSet = CreateDefaultSubobject<UExpAttributeSet>(TEXT("ExpAttributeSet"));
 	AbilitySystemComponent->AddAttributeSetSubobject<UHealthAttributeSet>(HealthSet);
 	AbilitySystemComponent->AddAttributeSetSubobject<UCombatAttributeSet>(CombatSet);
-
+	AbilitySystemComponent->AddAttributeSetSubobject<UExpAttributeSet>(ExpSet);
 	
 
 	StartLevel = 1;
@@ -68,6 +70,10 @@ void AGasFinallyCharacter::BeginPlay()
 	Super::BeginPlay();
 	AbilitySystemComponent->InitAbilityActorInfo(this, this); 
 	AbilitySystemComponent->GetSet<UHealthAttributeSet>()->OnOutOfHealth.AddDynamic(this, &AGasFinallyCharacter::OnOutOfHealthChar);
+	AbilitySystemComponent->GetSet<UExpAttributeSet>()->OnLevelChanged.AddDynamic(this, &AGasFinallyCharacter::OnLevelChangedChar);
+
+	AbilitySystemComponent->SetNumericAttributeBase(ExpSet->GetExpLevelAttribute(), StartLevel);
+	StartLevel = FMath::TruncToInt32(ExpSet->GetExpLevel());
 
 	IGameplayAbilitiesModule::Get().GetAbilitySystemGlobals()->GetAttributeSetInitter()->InitAttributeSetDefaults(AbilitySystemComponent, TEXT("GASCharacter"), StartLevel, true); //init attributes from data table instead of default values in blueprint
 	
@@ -92,6 +98,13 @@ UAbilitySystemComponent* AGasFinallyCharacter::GetAbilitySystemComponent() const
 void AGasFinallyCharacter::OnOutOfHealthChar(AActor* InIntigator)
 {
 	UE_LOG(LogTemplateCharacter, Warning, TEXT("Character %s is out of health!"), *GetNameSafe(this));
+}
+
+void AGasFinallyCharacter::OnLevelChangedChar(float OldExpLevel, float NewExpLevel)
+{
+	IGameplayAbilitiesModule::Get().GetAbilitySystemGlobals()->GetAttributeSetInitter()->InitAttributeSetDefaults(AbilitySystemComponent, TEXT("GASCharacter"), NewExpLevel, true); //setting the new level
+	const float MaxHealth = HealthSet->GetMaxHealth();
+	HealthSet->SetHealth(MaxHealth);
 }
 	
 

@@ -15,7 +15,7 @@ void UHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 	{
 		const float DamageValue = GetDamage();
 		const float OldHealthValue = GetHealth();
-		const float MaxHealthValue = GetMaxHealth();
+		const float MaxHealthValue = FMath::TruncToFloat(GetMaxHealth());
 		const float NewHealthValue = FMath::Clamp(OldHealthValue - DamageValue, 0.0f, MaxHealthValue);
 		
 		if(OldHealthValue != NewHealthValue)
@@ -33,7 +33,7 @@ void UHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 	{
 		const float HealValue = GetHeal();
 		const float OldHealthValue = GetHealth();
-		const float MaxHealthValue = GetMaxHealth();
+		const float MaxHealthValue = FMath::TruncToFloat(GetMaxHealth());
 		const float NewHealthValue = FMath::Clamp(OldHealthValue + HealValue, 0.0f, MaxHealthValue);
 
 		if (OldHealthValue != NewHealthValue)
@@ -50,6 +50,11 @@ void UHealthAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute
 	if (Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxHealth());
+		NewValue = FMath::TruncToFloat(NewValue);
+	}
+	if (Attribute == GetMaxHealthAttribute())
+	{
+		NewValue = FMath::TruncToFloat(NewValue);
 	}
 	Super::PreAttributeBaseChange(Attribute, NewValue);
 }

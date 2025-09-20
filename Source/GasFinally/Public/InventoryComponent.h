@@ -24,14 +24,21 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddItem(const FGameplayTag& ItemTag, int32 Count = 1);
 
+
 	UFUNCTION(BlueprintCallable)
-	void UseItem(const FGameplayTag& ItemTag, int32 Count);
+	void UseItem(int32 slotNum, int32 Count);
+
 
 	UFUNCTION(Blueprintpure)
 	FMasterItemDefinition GetItemDefinitionByTag(const FGameplayTag ItemTag) const;
 
+
 	UPROPERTY()
 	UMainWidget* MainWidgetInstance;
+
+
+	UPROPERTY(BlueprintReadWrite)
+	int32 ActiveSlotNumber = 1; // 1 to 5
 
 	void InitializeWidget(UMainWidget* Widget) { MainWidgetInstance = Widget; }
 protected:
@@ -40,6 +47,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAcess = "true"))  //its never replicated 
 	TMap<FGameplayTag, int32> InventoryMap;
+
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAcess = "true"))
+	TMap<int, FGameplayTag> SlotToTagMap; // which slot has which tag
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UItemTypesToTables> InventoryDefinitions;

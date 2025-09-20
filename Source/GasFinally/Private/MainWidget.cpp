@@ -1,4 +1,4 @@
-
+﻿
 
 #include "MainWidget.h"
 #include "SlotWidget.h"
@@ -9,70 +9,63 @@
 
 void UMainWidget::AddItemToWidget(const FGameplayTag ItemTag, const int Quantity)
 {
-	// Start with slot 1 if ActiveSlot isn�t already set
-	if (!ActiveSlot)
+	USlotWidget* CurrSlot = Slot1;
+	int32 SlotIndex = 1;
+
+	while (CurrSlot)
 	{
-		ActiveSlot = Slot1;
+		// CASE 1: Slot has same item → stack
+		if (CurrSlot->bIsOccupied && CurrSlot->ItemTagWidget == ItemTag)
+		{
+			int CurrentQuantity = FCString::Atoi(*CurrSlot->QuantityText->GetText().ToString());
+			CurrentQuantity += Quantity;
+			CurrSlot->QuantityText->SetText(FText::AsNumber(CurrentQuantity));
+			numNew = SlotIndex; // store the correct slot number
+			return;
+		}
+
+		// CASE 2: Slot is empty → assign new item
+		if (!CurrSlot->bIsOccupied)
+		{
+			if (const FMasterItemDefinition* Row = UMyAbilitySystemLibrary::GetDataTableRowByTag<FMasterItemDefinition>(ItemDataTable, ItemTag))
+			{
+				CurrSlot->SetItemIcon(Row->ItemIcon);
+				CurrSlot->QuantityText->SetText(FText::AsNumber(Quantity));
+				CurrSlot->bIsOccupied = true;
+				CurrSlot->ItemTagWidget = ItemTag;
+
+				numNew = SlotIndex; // store the correct slot number
+				return;
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("Could not find row for tag %s in ItemDataTable"), *ItemTag.ToString());
+				return;
+			}
+		}
+
+		// Otherwise, move to next slot
+		CurrSlot = CurrSlot->nextSlot;
+		SlotIndex++;
 	}
 
-	if (!ActiveSlot)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Active slot is NULL"));
-		return;
-	}
-
-	// CASE 1: Slot already occupied with the SAME item -> stack quantity
-	if (ActiveSlot->bIsOccupied && ActiveSlot->ItemTagWidget == ItemTag)
-	{
-		int CurrentQuantity = FCString::Atoi(*ActiveSlot->QuantityText->GetText().ToString());
-		CurrentQuantity += Quantity;
-		ActiveSlot->QuantityText->SetText(FText::AsNumber(CurrentQuantity));
-		ActiveSlot = Slot1;
-		return;
-	}
-
-	// CASE 2: Slot is occupied but with a DIFFERENT item -> move to next slot
-	if (ActiveSlot->bIsOccupied && ActiveSlot->ItemTagWidget != ItemTag)
-	{
-		if (ActiveSlot->nextSlot)
-		{
-			ActiveSlot = ActiveSlot->nextSlot;
-			AddItemToWidget(ItemTag, Quantity);
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("No empty slot available for item %s"), *ItemTag.ToString());
-		}
-		return;
-	}
-
-	// CASE 3: Slot is empty -> assign new item
-	if (!ActiveSlot->bIsOccupied)
-	{
-		if (const FMasterItemDefinition* Row = UMyAbilitySystemLibrary::GetDataTableRowByTag<FMasterItemDefinition>(ItemDataTable, ItemTag))
-		{
-			ActiveSlot->SetItemIcon(Row->ItemIcon);
-			ActiveSlot->QuantityText->SetText(FText::AsNumber(Quantity));
-			ActiveSlot->bIsOccupied = true;
-			ActiveSlot->ItemTagWidget = ItemTag;
-			ActiveSlot = Slot1;
-		}
-		else
-		{
-			UE_LOG(LogTemp, Error, TEXT("Could not find row for tag %s in ItemDataTable"), *ItemTag.ToString());
-		}
-	}
+	UE_LOG(LogTemp, Warning, TEXT("No empty slot available for item %s"), *ItemTag.ToString());
 }
 
 
-void UMainWidget::UseItemFromWidget(const int Quantity)
-{
-	ActiveSlot = Slot1;
-	ActiveSlot->QuantityText->SetText(FText::AsNumber(Quantity));
+
+void UMainWidget::UseItemFromWidget(int32 SlotNum,const int Quantity)
+{	
+	SetActiveSlot(SlotNum);
+	if (ActiveSlot)
+	{
+		ActiveSlot->QuantityText->SetText(FText::AsNumber(Quantity));
+	}
 }
 
-void UMainWidget::RemoveItemFromWidget()
-{
+void UMainWidget::RemoveItemFromWidget(int slotNum)
+{	
+	SetActiveSlot(slotNum);
 	if (ActiveSlot)
 	{
 		ActiveSlot->ItemIcon->SetBrushFromTexture(nullptr);
@@ -81,22 +74,52 @@ void UMainWidget::RemoveItemFromWidget()
 	}
 }
 
-
-USlotWidget* UMainWidget::GetEmptySlot()
-{	
-	USlotWidget* CurrentSlot = Slot1;
-	while (CurrentSlot)
-	{
-		if (!CurrentSlot->bIsOccupied)
-		{	
-			UE_LOG(LogTemp, Warning, TEXT("Slot free = %s"), *CurrentSlot->GetName());
-			return CurrentSlot; // found a free slot
-		}
-
-		CurrentSlot = CurrentSlot->nextSlot;
-	}
-	return nullptr;
+int32 UMainWidget::GetSlotNumber() const
+{
+	return numNew;
 }
+
+//void UMainWidget::SetSlotNumber(int32 num)
+//{
+//	numNew = num;
+//}
+
+void UMainWidget::SetActiveSlot(int32 slotNum)
+{	
+	ActiveSlot = Slot1;
+	while (slotNum - 1 > 0)
+	{
+		if (ActiveSlot->nextSlot)
+		{
+			ActiveSlot = ActiveSlot->nextSlot;
+			slotNum--;
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No such slot number %d"), slotNum);
+			return;
+		}
+	}
+}
+
+
+//USlotWidget* UMainWidget::GetEmptySlot()
+//{	
+//	USlotWidget* CurrentSlot = Slot1;
+//	int count = 1;
+//	while (CurrentSlot)
+//	{	
+//		if (!CurrentSlot->bIsOccupied)
+//		{	
+//			UE_LOG(LogTemp, Warning, TEXT("Slot free = %d"), count);
+//			SetSlotNumber(count);
+//			return CurrentSlot; // found a free slot
+//		}
+//		count++;
+//		CurrentSlot = CurrentSlot->nextSlot;
+//	}
+//	return nullptr;
+//}
 
 void UMainWidget::InitializeSlots()
 {

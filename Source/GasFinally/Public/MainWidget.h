@@ -17,15 +17,24 @@ class GASFINALLY_API UMainWidget : public UUserWidget, public IInventoryInterfac
 	
 public:
 	void AddItemToWidget(const FGameplayTag ItemTag, const int Quantity) override;
-	void UseItemFromWidget(const int Quantity) override;
-	void RemoveItemFromWidget() override;
+	void UseItemFromWidget(int32 SlotNum, const int Quantity) override;
+	void RemoveItemFromWidget(int slotNum) override;
+	int32 GetSlotNumber() const override;
+
+	UPROPERTY(BlueprintReadWrite)
+	int32 numNew = 1;
+
+	/*void SetSlotNumber(int32 num);*/
+
+	UFUNCTION(BlueprintCallable)
+	void SetActiveSlot(int32 slotNum);
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Inventory")
 	UDataTable* ItemDataTable;
 
 
-	UFUNCTION(BlueprintCallable)
-	USlotWidget* GetEmptySlot();
+	//UFUNCTION(BlueprintCallable)
+	//USlotWidget* GetEmptySlot();
 
 	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidgetOptional), Category = "Inventory")

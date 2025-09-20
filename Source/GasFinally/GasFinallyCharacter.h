@@ -59,8 +59,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<class UCombatAttributeSet> CombatSet;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<class UExpAttributeSet> ExpSet;
+
 	UFUNCTION()
 	void OnOutOfHealthChar(AActor* InIntigator);
+
+	UFUNCTION()
+	void OnLevelChangedChar(float OldExpLevel, float NewExpLevel);
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly) //experience level bro
 	int32 StartLevel;

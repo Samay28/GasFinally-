@@ -20,7 +20,8 @@ public class GasFinally : ModuleRules
 			"UMG",
             "GameplayAbilities", 
 			"GameplayTags", 
-			"GameplayTasks"
+			"GameplayTasks",
+            "NavigationSystem"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

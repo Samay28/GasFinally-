@@ -25,7 +25,6 @@ void UHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 		if (GetHealth() <= 0.0f)
 		{
 			OnOutOfHealth.Broadcast(Data.EffectSpec.GetEffectContext().GetInstigator()); //use this to notify listeners that we are out of health and hide heath bar of the player
-			UE_LOG(LogTemp, Warning, TEXT("aye"));
 		}
 		OnDamageApplied.Broadcast(Data.EffectSpec.GetEffectContext().GetInstigator(), DamageValue);
 		SetDamage(0.0f);
